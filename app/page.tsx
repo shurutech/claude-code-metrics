@@ -1,4 +1,4 @@
-import { parseRange, rangeToDates } from "@/lib/range";
+import { parseDateParams, rangeLabel } from "@/lib/range";
 import {
   queryKpi,
   queryDailyTotal,
@@ -14,10 +14,10 @@ import { LocVsDevsChart } from "./components/LocVsDevsChart";
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Promise<{ range?: string }>;
+  searchParams: Promise<{ start?: string; end?: string }>;
 }) {
-  const range = parseRange((await searchParams).range);
-  const { start, end } = rangeToDates(range);
+  const { start, end } = parseDateParams(await searchParams);
+  const subtitle = rangeLabel(start, end);
 
   const [kpi, daily, perDev, combo] = await Promise.all([
     queryKpi(start, end),
@@ -32,13 +32,13 @@ export default async function Page({
         <h1 className="text-2xl font-bold text-slate-900">
           Claude Code Metrics
         </h1>
-        <DateRangePicker current={range} />
+        <DateRangePicker start={start} end={end} />
       </header>
 
       <KpiCard
         label="Lines of code added"
         value={kpi.total}
-        range={range}
+        subtitle={subtitle}
       />
       <DailyTotalChart data={daily} />
       <PerDeveloperChart data={perDev} />

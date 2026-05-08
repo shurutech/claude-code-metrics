@@ -1,20 +1,11 @@
-import type { Range } from "@/lib/range";
-
-const RANGE_LABEL: Record<Range, string> = {
-  "7d": "last 7 days",
-  "30d": "last 30 days",
-  "90d": "last 90 days",
-  all: "all time",
-};
-
 export function KpiCard({
   label,
   value,
-  range,
+  subtitle,
 }: {
   label: string;
   value: number;
-  range: Range;
+  subtitle: string;
 }) {
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
@@ -22,7 +13,7 @@ export function KpiCard({
       <p className="mt-2 text-4xl font-bold tracking-tight text-slate-900">
         {value.toLocaleString()}
       </p>
-      <p className="mt-1 text-xs text-slate-500">{RANGE_LABEL[range]}</p>
+      <p className="mt-1 text-xs text-slate-500">{subtitle}</p>
     </div>
   );
 }
