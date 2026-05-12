@@ -2,13 +2,11 @@ import { parseDateParams, rangeLabel } from "@/lib/range";
 import {
   queryKpi,
   queryDailyTotal,
-  queryPerDev,
   queryLocVsDevs,
 } from "@/lib/queries";
 import { DateRangePicker } from "./components/DateRangePicker";
 import { KpiCard } from "./components/KpiCard";
 import { DailyTotalChart } from "./components/DailyTotalChart";
-import { PerDeveloperChart } from "./components/PerDeveloperChart";
 import { LocVsDevsChart } from "./components/LocVsDevsChart";
 
 export default async function Page({
@@ -19,10 +17,9 @@ export default async function Page({
   const { start, end } = parseDateParams(await searchParams);
   const subtitle = rangeLabel(start, end);
 
-  const [kpi, daily, perDev, combo] = await Promise.all([
+  const [kpi, daily, combo] = await Promise.all([
     queryKpi(start, end),
     queryDailyTotal(start, end),
-    queryPerDev(start, end),
     queryLocVsDevs(start, end),
   ]);
 
@@ -41,7 +38,6 @@ export default async function Page({
         subtitle={subtitle}
       />
       <DailyTotalChart data={daily} />
-      <PerDeveloperChart data={perDev} />
       <LocVsDevsChart data={combo} />
     </main>
   );
