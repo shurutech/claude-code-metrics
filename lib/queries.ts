@@ -118,6 +118,7 @@ async function _queryTokenPerDev(
     SELECT day, user_email, SUM(input_tokens + output_tokens)::bigint AS total
     FROM claude_code_daily_tokens
     WHERE day BETWEEN ${start} AND ${end}
+      AND user_email <> 'roj@shurutech.com'
     GROUP BY day, user_email
     ORDER BY day, user_email
   `;
